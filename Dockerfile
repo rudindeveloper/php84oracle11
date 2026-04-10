@@ -19,7 +19,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install zip \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Фикс libaio для Debian Trixie (критично для Oracle)
+# 2. Установка Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# 3. Фикс libaio для Debian Trixie (критично для Oracle)
 RUN if [ ! -f /usr/lib/x86_64-linux-gnu/libaio.so.1 ]; then \
         find /usr -name "libaio.so.*" -type f | head -1 | xargs -I {} ln -sf {} /usr/lib/x86_64-linux-gnu/libaio.so.1; \
     fi \
