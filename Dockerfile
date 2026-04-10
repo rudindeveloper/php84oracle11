@@ -11,12 +11,17 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libzip-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libwebp-dev \
     autoconf \
     build-essential \
     libpq-dev \
     default-libmysqlclient-dev \
     && (apt-get install -y libaio1t64 || apt-get install -y libaio1) \
-    && docker-php-ext-install zip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install zip gd \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Установка Composer
